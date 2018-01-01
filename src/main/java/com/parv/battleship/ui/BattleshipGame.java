@@ -1,21 +1,33 @@
 package com.parv.battleship.ui;
-
-import javax.swing.*;
-
-import com.parv.battleship.StrategyProcessor;
-
-import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
 /*
  * [BattleshipGame.java]
  * A GUI version of the classic battleship game
  * Author:Parvathi Krishnan
  * Date: May 21st, 2016
  */
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import java.io.File;
+import java.io.PrintWriter;
+
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+import com.parv.battleship.StrategyProcessor; 
 
 public class BattleshipGame extends JFrame implements ActionListener{
-  StrategyProcessor processor = new StrategyProcessor();
+	StrategyProcessor processor = new StrategyProcessor();
   
 //setting layout
   Object[] possibilities = {"Destroyer","Submarine","Cruiser","Battleship","Carrier"};
@@ -37,7 +49,7 @@ public class BattleshipGame extends JFrame implements ActionListener{
   JLabel hor7 = new JLabel("   7   ");
   JLabel hor8 = new JLabel("   8   ");
   JLabel hor9 = new JLabel("   9   ");
-  JLabel hor10 = new JLabel("  110 ");
+  JLabel hor10 = new JLabel("  10 ");
   JLabel ver1 = new JLabel("1");
   JLabel ver2 = new JLabel("2");
   JLabel ver3 = new JLabel("3");
@@ -51,7 +63,7 @@ public class BattleshipGame extends JFrame implements ActionListener{
   JLabel verlabel = new JLabel();
   JPanel bottomPanel = new JPanel();
   JButton start = new JButton("  START  ");
-  JLabel instructions = new JLabel("<html>Welcome to the Battleship Game!<br>The following computer software is an adaptation <br>of the classic board game of the same name.<br> The object of the game is to sink all of your opponent's ships. <br>In this game, you (the human) will verse the computer (the AI).<br>You will be playing ON PAPER. <br>Before starting the game, please make sure you understand ALL of <br>the following instructions:<br>1. After printing the grid for yourself, place your 5 <br>ships on the grid however you may like.<br> 2. You will go first by choosing a square on the 10 x 10 grid.<br> The computer will tell you if your choice was a HIT or a MISS. <br>If it was a HIT, the computer will tell you which ship you hit.<br>3. Then, the computer will output a certain row and column <br>number which corresponds to a square on your grid.<br> REMEMBER, the numbers labeling the left are ROWS, and the numbers <br>labeling the top are COLUMNS. <br>You will then tell the computer whether it was a HIT or MISS.<br>4. The game will continue until: a) either the <br>player (you) or the computer has sunk ALL of the other player's ships,<br> orb) You have made a total of 50 moves, including HITS and MISSES.<br>5. At the end of the game, the software will tell you the results<br> of the game, and who won.<br>After reading these instructions, press START and have fun!");
+  JLabel instructions = new JLabel(getInstructions());
   JLabel userscores = new JLabel();
   JLabel compscores = new JLabel();
   
@@ -74,7 +86,12 @@ public class BattleshipGame extends JFrame implements ActionListener{
   int tie = 0; // for the tie
   //declaring 2-D arrays; one for the computing array which is the main processor, the other is for the 2-D array of buttons (user layout)
   JButton grid[][] = new JButton[ROW][COL];
-  String[][] compGrid = new String[ROW][COL];        
+  String[][] compGrid = new String[ROW][COL];
+  int carrierC = 0;
+  int battleshipC = 0;
+  int cruiserC = 0;
+  int submarineC = 0;
+  int destroyerC = 0;
   
   //main constructor
   public BattleshipGame(){ 
@@ -382,8 +399,7 @@ public class BattleshipGame extends JFrame implements ActionListener{
     
 
     
-    String sNumber;
-    int coordinate;
+  
     
     GridLayout layout1 = new GridLayout(ROW, COL);
     FlowLayout layout2 = new FlowLayout();
@@ -394,7 +410,7 @@ public class BattleshipGame extends JFrame implements ActionListener{
     
     for (int row = 0; row < ROW; row++){
       for (int col = 0; col < COL; col++){
-        coordinate = row * 10 + (col + 1);
+      
         grid[row][col] = new JButton();
         grid[row][col].setPreferredSize(new Dimension(30,30));
         grid[row][col].addActionListener(this); // adds the action listener for every button
@@ -494,13 +510,7 @@ public class BattleshipGame extends JFrame implements ActionListener{
     setResizable(false);
     setVisible(true);
   }
-  
-  int carrierC = 0;
-  int battleshipC = 0;
-  int cruiserC = 0;
-  int submarineC = 0;
-  int destroyerC = 0;
-  
+
 //determining hit or mis actionlistener ====================================================================================
   public void actionPerformed (ActionEvent event) {
     String command = event.getActionCommand();//gets the name of the button
@@ -741,7 +751,25 @@ public class BattleshipGame extends JFrame implements ActionListener{
       
     }
   }
-  
-  
-  
+
+  private String getInstructions(){
+	return  "<html>Welcome to the Battleship Game!<br>The following computer software is an "
+			+ "adaptation <br>of the classic board game of the same name.<br> The object of the "
+			+ "game is to sink all of your opponent's ships. <br>In this game, you (the human) will "
+			+ "verse the computer (the AI).<br>You will be playing ON PAPER. <br>Before starting "
+			+ "the game, please make sure you understand ALL of <br>the following instructions"
+			+ ":<br>1. After printing the grid for yourself, place your 5 <br>ships on the grid "
+			+ "however you may like.<br> 2. You will go first by choosing a square on the 10 x 10 "
+			+ "grid.<br> The computer will tell you if your choice was a HIT or a MISS. <br>If it "
+			+ "was a HIT, the computer will tell you which ship you hit.<br>3. Then, the computer "
+			+ "will output a certain row and column <br>number which corresponds to a square on your "
+			+ "grid.<br> REMEMBER, the numbers labeling the left are ROWS, and the numbers "
+			+ "<br>labeling the top are COLUMNS. <br>You will then tell the computer whether it was "
+			+ "a HIT or MISS.<br>4. The game will continue until: a) either the <br>player (you) or "
+			+ "the computer has sunk ALL of the other player's ships,<br> orb) You have made a total "
+			+ "of 50 moves, including HITS and MISSES.<br>5. At the end of the game, the software "
+			+ "will tell you the results<br> of the game, and who won.<br>After reading these "
+			+ "instructions, press START and have fun!";
+
+}
 }

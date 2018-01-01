@@ -7,5 +7,4 @@ public class GameStarter {
 	    BattleshipGame game = new BattleshipGame();
 	    game.start();
 	  }
-
 }
